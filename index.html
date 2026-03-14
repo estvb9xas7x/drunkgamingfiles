@@ -1,10 +1,430 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-  <title>Mi página</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DGFiles</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #1a1a2e;
+            background: #fafbfc;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── Header ── */
+        header {
+            background: #fff;
+            border-bottom: 1px solid #e8eaed;
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: #4f6ef7;
+        }
+
+        nav a {
+            color: #5f6368;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-left: 32px;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: #4f6ef7;
+        }
+
+        /* ── Container ── */
+        .container {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ── Hero ── */
+        .hero {
+            text-align: center;
+            padding: 100px 0 80px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #1a1a2e;
+            letter-spacing: -1px;
+            margin-bottom: 16px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #5f6368;
+            max-width: 580px;
+            margin: 0 auto;
+        }
+
+        .divider {
+            width: 48px;
+            height: 3px;
+            background: #4f6ef7;
+            border-radius: 2px;
+            margin: 60px auto 0;
+        }
+
+        /* ── Person Card (nombre + imagen + texto vertical) ── */
+        .person-section {
+            padding: 80px 0;
+        }
+
+        .person-section:nth-child(even) {
+            background: #fff;
+        }
+
+        .person-card {
+            max-width: 640px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .person-card h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 24px;
+            letter-spacing: -0.5px;
+        }
+
+        .person-card .person-image {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            margin-bottom: 28px;
+        }
+
+        .person-card .person-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .person-card .person-image .placeholder {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            background: linear-gradient(135deg, #e8ecf4 0%, #d5dbe8 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8b95a5;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .person-card p {
+            font-size: 1.1rem;
+            color: #5f6368;
+            line-height: 1.8;
+        }
+
+        /* ── Gallery Section ── */
+        .gallery-section {
+            padding: 80px 0;
+        }
+
+        .gallery-section h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            text-align: center;
+            margin-bottom: 48px;
+            letter-spacing: -0.5px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .gallery-item {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .gallery-item .placeholder {
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            background: linear-gradient(135deg, #e8ecf4 0%, #d5dbe8 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8b95a5;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* ── Spoiler ── */
+        .spoiler {
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .spoiler img {
+            filter: blur(30px);
+            transition: filter 0.4s ease;
+        }
+
+        .spoiler.revealed img {
+            filter: blur(0);
+        }
+
+        .spoiler-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            transition: opacity 0.4s ease;
+            z-index: 2;
+        }
+
+        .spoiler-overlay span {
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .spoiler.revealed .spoiler-overlay {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* ── Footer ── */
+        footer {
+            text-align: center;
+            padding: 48px 0;
+            border-top: 1px solid #e8eaed;
+            color: #9aa0a6;
+            font-size: 0.9rem;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 64px 0 48px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1.05rem;
+            }
+
+            .person-section,
+            .gallery-section {
+                padding: 48px 0;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav a {
+                margin-left: 20px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1>Hola mundo</h1>
-  <p>Mi página está funcionando 🚀</p>
+
+    <header>
+        <div class="container">
+            <a href="#" class="logo">DG<span>Files</span></a>
+            <nav>
+                <a href="#jairito">Jairito</a>
+                <a href="#lisa">Lisa</a>
+                <a href="#pruebas">Pruebas</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Drunk-Gaming</h1>
+            <p>Archivos y registros de la comunidad, exponiendo al fundador de esta comunidad cada dia mas en decadencia, lamentamos que sus usuarios tengan como referente a este sujeto</p>
+            <div class="divider"></div>
+        </div>
+    </section>
+
+    <!-- Jairito Mapper -->
+    <section class="person-section" id="jairito">
+        <div class="container">
+            <div class="person-card">
+                <h2>Jairito Mapper</h2>
+                <p>Jairito Mapper, el fundador de la comunidad Drunk-Gaming, este muchacho es el lider de esta comunidad hasta la fecha, siendo la cara visible de su proyecto, este sujeto posee imagenes de una menor de edad (en la actualidad, logicamente ya no), pero podran ver imagenes del 2020 aprox. cuando la chica en cuestion (y ex-staff con uno de los cargos mas altos de Drunk-Gaming, DIRECTORA) tenia 16 años, con fecha de nacimiento 19/02/2004, agradecemos a quienes proporcionaron estas imagenes en un discord publico.</p>
+                <p style="color:#c0392b; font-weight:600; margin-top:20px; margin-bottom:8px;">(VER BAJO DISCRECION)</p>
+                <div class="person-image spoiler" onclick="this.classList.add('revealed')">
+                    <div class="spoiler-overlay"><span>Click para revelar</span></div>
+                    <img src="pruebas-valen01.png" alt="Jairito Mapper">
+                </div>
+                <div class="person-image spoiler" onclick="this.classList.add('revealed')">
+                    <div class="spoiler-overlay"><span>Click para revelar</span></div>
+                    <img src="edad-01.png" alt="Jairito Mapper">
+                </div>
+                <div class="person-image spoiler" onclick="this.classList.add('revealed')">
+                    <div class="spoiler-overlay"><span>Click para revelar</span></div>
+                    <img src="jairito-01.png" alt="Jairito Mapper">
+                </div>
+                <p>Esta cuenta, Deleted User, es la cuenta original de Jairito Mapper, pero de acuerdo a el, se la "hackearon", segun Jairo, robada pero posteriormente, eliminada, cuestion que se hace raro... porque borrarias tu cuenta, por miedo? Segun sabemos, debajo habria una nueva imagen pero debido a los años de la imagen, se borro.</p>
+                <h2 style="margin-top:40px;">SEGUIMOS CON NUESTRO JEFFREY EPSTEIN FAVORITO</h2>
+                <p style="color:#c0392b; font-weight:600; margin-top:20px; margin-bottom:8px;">(VER BAJO DISCRECION)</p>
+                <div class="person-image spoiler" onclick="this.classList.add('revealed')">
+                    <div class="spoiler-overlay"><span>Click para revelar</span></div>
+                    <img src="valen01.png" alt="Prueba">
+                </div>
+                <div class="person-image spoiler" onclick="this.classList.add('revealed')">
+                    <div class="spoiler-overlay"><span>Click para revelar</span></div>
+                    <img src="valen02.png" alt="Prueba">
+                </div>
+                <div class="person-image spoiler" onclick="this.classList.add('revealed')">
+                    <div class="spoiler-overlay"><span>Click para revelar</span></div>
+                    <img src="valen03.png" alt="Prueba">
+                </div>
+                <p style="font-size:0.9rem; color:#888; margin-top:12px; font-style:italic;">Curioso que tuvieran imagenes y videos de una chica, no?</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lisa Hayes -->
+    <section class="person-section" id="lisa">
+        <div class="container">
+            <div class="person-card">
+                <h2>Lisa Hayes</h2>
+                <p>Nada que decir, complice de don Jairito Mapper, ambos teniendo imagenes de la chica en cuestion, Valentina, independiente de las justificaciones, no existe el perdon de tener imagenes de una chica menor de edad, adjuntamos el poderoso documento que lleva tiempo publico respecto a los antecedentes de este chico tambien y todo lo malo que ha hecho.</p>
+                <a href="tyler.docx" download style="display:inline-block; margin-top:20px; margin-bottom:12px; padding:10px 24px; background:#4f6ef7; color:#fff; text-decoration:none; border-radius:8px; font-weight:600; font-size:0.95rem;">Descargar tyler.docx</a>
+                <div class="person-image spoiler" onclick="this.classList.add('revealed')">
+                    <div class="spoiler-overlay"><span>Click para revelar</span></div>
+                    <img src="word01.png" alt="Word">
+                </div>
+                <div class="person-image spoiler" onclick="this.classList.add('revealed')">
+                    <div class="spoiler-overlay"><span>Click para revelar</span></div>
+                    <img src="word02.png" alt="Word">
+                </div>
+                <div class="person-image spoiler" onclick="this.classList.add('revealed')">
+                    <div class="spoiler-overlay"><span>Click para revelar</span></div>
+                    <img src="word03.png" alt="Word">
+                </div>
+                <div class="person-image spoiler" onclick="this.classList.add('revealed')">
+                    <div class="spoiler-overlay"><span>Click para revelar</span></div>
+                    <img src="word04.png" alt="Word">
+                </div>
+                <p style="color:#c0392b; font-weight:600; margin-top:20px; margin-bottom:8px;">(VER BAJO DISCRECION)</p>
+                <div class="person-image spoiler" onclick="this.classList.add('revealed')">
+                    <div class="spoiler-overlay"><span>Click para revelar</span></div>
+                    <img src="pruebas-valen02.png" alt="Lisa Hayes">
+                </div>
+                <div class="person-image spoiler" onclick="this.classList.add('revealed')">
+                    <div class="spoiler-overlay"><span>Click para revelar</span></div>
+                    <img src="pruebas-valen03.png" alt="Lisa Hayes">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Compras Robo -->
+    <section class="person-section" id="compras">
+        <div class="container">
+            <div class="person-card">
+                <h2>COMPRAS ROBO DE JAIRITO MAPPER Y DESVIOS DE DINERO</h2>
+                <p>Este sujeto, el fundador de Drunk-Gaming, ademas del Grooming le encanta hasta el dia de hoy el dinero, tan asi que en anos pasados era capaz de desviar las ventas de otros desarrolladores para quedarselas el, dandole 0$ a quienes mantenian su comunidad con gente y activa en actualizaciones, que feo, no? osea un ladron total, mal ahi causita, sigue programando con tu ChatGPT chafa</p>
+                <p style="color:#c0392b; font-weight:600; margin-top:20px; margin-bottom:8px;">(VER BAJO DISCRECION)</p>
+                <div class="person-image spoiler" onclick="this.classList.add('revealed')">
+                    <div class="spoiler-overlay"><span>Click para revelar</span></div>
+                    <img src="ventas-01.png" alt="Compras Robo">
+                </div>
+                <div class="person-image spoiler" onclick="this.classList.add('revealed')">
+                    <div class="spoiler-overlay"><span>Click para revelar</span></div>
+                    <img src="ventas-02.png" alt="Compras Robo">
+                </div>
+                <div class="person-image spoiler" onclick="this.classList.add('revealed')">
+                    <div class="spoiler-overlay"><span>Click para revelar</span></div>
+                    <img src="ventas-03.png" alt="Compras Robo">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mas Pruebas -->
+    <section class="gallery-section" id="pruebas">
+        <div class="container">
+            <h2>MAS PRUEBAS QUE SE IRAN AGREGANDO CON LOS DIAS</h2>
+            <p style="color:#c0392b; font-weight:600; text-align:center; margin-bottom:24px;">(VER BAJO DISCRECION)</p>
+            <div class="gallery-grid">
+                <div class="gallery-item spoiler" onclick="this.classList.add('revealed')">
+                    <div class="spoiler-overlay"><span>Click para revelar</span></div>
+                    <img src="mas-pruebas01.png" alt="Mas pruebas 1">
+                </div>
+                <div class="gallery-item spoiler" onclick="this.classList.add('revealed')">
+                    <div class="spoiler-overlay"><span>Click para revelar</span></div>
+                    <img src="mas-pruebas02.png" alt="Mas pruebas 2">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            DGFiles &copy; 2026<br>
+            Made in love from Peru &#127477;&#127466;
+        </div>
+    </footer>
+
 </body>
 </html>
